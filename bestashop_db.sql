@@ -39,14 +39,6 @@ CREATE TABLE clients (
     PRIMARY KEY (client_id)
 );
 
-CREATE TABLE addresses (
-    address_id INT AUTO_INCREMENT,
-    street VARCHAR(256),
-    street_number VARCHAR(6),
-    additional_details VARCHAR(256),
-    
-
-);
 
 CREATE VIEW products_full AS
 SELECT p.product_id, s.name AS 'seller', c.name AS 'category', p.description, p.price, p.location
