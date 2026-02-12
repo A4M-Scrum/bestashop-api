@@ -1,4 +1,8 @@
-CREATE DATABASE IF NOT EXISTS bestashop_db;
+-- Uncomment this line if you wish for the script to create the database
+-- WARNING: Requires the script to be run with admin privileges
+-- CREATE DATABASE IF NOT EXISTS bestashop_db;
+
+-- Replace bestashop_db with the name of your database
 USE bestashop_db;
 
 CREATE TABLE categories (
@@ -26,4 +30,28 @@ CREATE TABLE products (
 );
 
 
-SELECT * FROM products;
+CREATE TABLE clients (
+    client_id INT AUTO_INCREMENT,
+    name VARCHAR(512),
+    email VARCHAR(320),
+    password VARCHAR(128),
+    salt VARCHAR(128),
+    PRIMARY KEY (client_id)
+);
+
+CREATE TABLE addresses (
+    address_id INT AUTO_INCREMENT,
+    street VARCHAR(256),
+    street_number VARCHAR(6),
+    additional_details VARCHAR(256),
+    
+
+);
+
+CREATE VIEW products_full AS
+SELECT p.product_id, s.name AS 'seller', c.name AS 'category', p.description, p.price, p.location
+  FROM products AS p
+  JOIN sellers AS s
+    ON p.seller_id = s.seller_id
+  JOIN categories AS c
+    ON p.category_id = c.category_id;
