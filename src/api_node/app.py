@@ -6,8 +6,8 @@ app = Flask(__name__)
 def home():
     if request.method == "GET":
         diction = {
-            1 : "hello",
-            2 : ["2212",True,False,22.32]
+            1 : "hello world",
+            2 : ["a!",True,22.32]
         }
         return jsonify(diction)
     else: return "Hello world"
