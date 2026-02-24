@@ -34,7 +34,17 @@ class bshop_db:
         return cursor.execute(statement)
     
     def stm_insert_into(self, table: str,values: list,columns: list|None = None):
-        statement = 'INSERT INTO ? ? VALUES ?;'
+        sql = "INSERT INTO %s(%s) VALUES (%s);"
+        val = (table, str(columns)[2:-2], str(values)[2:-2])
+        print('sql = ' + sql)
+        print('columns = ' + str(columns))
+        print('values:')
+        for v in val:
+            print(v)
+        cursor = self._connection['cursor']
+        cursor.execute(sql, val)
+        self._connection['database'].commit()
+
 
     def stm_update(self, table: str, column_value: dict, where: str):
         statement = 'UPDATE ? SET ? WHERE ?;'
@@ -43,10 +53,22 @@ class bshop_db:
         statement = 'DELETE FROM ? WHERE ?;'
 
 def getall_products(conn: bshop_db):
-    products = conn.stm_select(columns='*',tables='products_full')
+    products = conn.stm_select(columns='*',tables='products')
     print(products)
+
+def insert_product(conn: bshop_db, values: list):
+    conn.stm_insert_into(table='products', columns=['seller_id, category_id, name, description, price, image_url'], values=values)
+
+def insert_category(conn:bshop_db, values: list):
+    conn.stm_insert_into(table='categories', columns=['name'], values=values)
+
+def insert_seller(conn: bshop_db, values: list):
+    conn.stm_insert_into(table='sellers', columns=['name'], values=values)
+
 
 if __name__ == "__main__":
     database = bshop_db()
     database.set_conn(user = 'remote',host = '10.3.3.205', database = 'bestashop_db')
+    insert_category(database, ['Coche'])
+    insert_seller(database, values=['Honda'])
     test = getall_products(database)
